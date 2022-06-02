@@ -3,6 +3,15 @@ using SymEngine
 using LinearAlgebra
 using InvertedIndices
 export multiResidue, gd, 𝒟,degree, FrobeniusSolve, solve
+export @varss
+macro varss(x,n::Int64)
+      q=Expr(:block)
+      for i = 1:n
+          push!(q.args, Expr(:(=), esc(Symbol("$x$i")), Expr(:call, :(SymEngine._symbol), Expr(:quote, Symbol("$x$i")))))
+      end
+      push!(q.args, Expr(:tuple, map(esc, "$x".*map(string,1:n).|>Symbol)...))
+      q
+  end
 function degree(f::Basic)
       if SymEngine.get_symengine_class(f)==:Add
              ls=get_args(f); 
