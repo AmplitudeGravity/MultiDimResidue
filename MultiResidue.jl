@@ -48,6 +48,9 @@ function FrobeniusSolve(vec::Vector{Int64},vs::Int64)
      end
      res
 end
+function MatrixRank()
+      0
+end
 function gd(f::Basic,var::Basic,order::Int64)
      if order==0
            f
