@@ -101,7 +101,7 @@ multiResidue((z2+1)/(z1^2-z3-1),[z1, z2,(z1 + z2)*(z1 + z2 + z3)],[z1,z2,z3])
 ```
 The output is not fully determined and you will get 
 ```
-a(0,0,1)
+false
 ```
 The general math meaning or definition of such residue is still an open question. 
 
