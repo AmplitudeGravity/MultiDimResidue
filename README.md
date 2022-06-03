@@ -58,6 +58,37 @@ The output is
 -5/3
 ```
 
+## Example 4
+The fourth example, for the equations with symbolic coefficients
+```
+@varss z 3
+@vars a b c
+@vars x y z
+h1=a*z1*z2 + z1*z3;
+h2=z1^3*z2-2b*z2^4;
+h3=z1^2 - z2*z1 + z3^2;
+ideal=[h1,h2,h3];
+vars=[z1, z2, z3];
+MultiResidue.homoEqn([h1,h2,h3],[z1,z2,z3],5)
+
+MultiResidue.inhomoEqn([h1,h2,h3],[z1,z2,z3],5)
+
+MultiResidue.eqnAnsatz([h1,h2,h3],[z1,z2,z3],5)
+
+res=multiResidue((2z2+1)/(z1^2-z3-1),[h1,h2,h3],[z1,z2,z3])
+```
+The output is 
+```
+-16*(-6 - 6*(4 + 8*b/a^2)/(4 - 4*a^(-2)))/(96*b/a^3 + (-3/2)*(128*b - 64*b/a^2)/a + (-1/2)*(-192*b/a^3 - 3*(64*b/a^2 + 64*a^2)/a)*(4 + 8*b/a^2)/(4 - 4*a^(-2))) + 32*(6*(4 + 8*b/a^2)/(a*(4 - 4*a^(-2))) + 6*a^(-1))/(96*b/a^3 + (-3/2)*(128*b - 64*b/a^2)/a + (-1/2)*(-192*b/a^3 - 3*(64*b/a^2 + 64*a^2)/a)*(4 + 8*b/a^2)/(4 - 4*a^(-2))) + 384*b/(a^3*(96*b/a^3 + (-3/2)*(128*b - 64*b/a^2)/a + (-1/2)*(-192*b/a^3 - 3*(64*b/a^2 + 64*a^2)/a)*(4 + 8*b/a^2)/(4 - 4*a^(-2)))) + 576*b/(a^2*(96*b/a^3 + (-3/2)*(128*b - 64*b/a^2)/a + (-1/2)*(-192*b/a^3 - 3*(64*b/a^2 + 64*a^2)/a)*(4 + 8*b/a^2)/(4 - 4*a^(-2)))) - 384*(4 + 8*b/a^2)/((4 - 4*a^(-2))*(96*b/a^3 + (-3/2)*(128*b - 64*b/a^2)/a + (-1/2)*(-192*b/a^3 - 3*(64*b/a^2 + 64*a^2)/a)*(4 + 8*b/a^2)/(4 - 4*a^(-2)))) - 576*(4 + 8*b/a^2)/(a*(4 - 4*a^(-2))*(96*b/a^3 + (-3/2)*(128*b - 64*b/a^2)/a + (-1/2)*(-192*b/a^3 - 3*(64*b/a^2 + 64*a^2)/a)*(4 + 8*b/a^2)/(4 - 4*a^(-2))))
+```
+Nowadays, we still do not have any efficient simplifcation code in Julia CAS. The SymEngine is updated so slow in recent years. However, by mathematica, the result can be simplified to 
+```
+-((a^3 + 2 a^4 + 2 a^5 + 4 b + 6 a b + a^2 (2 + 4 b))/(
+ a^6 + 6 a^2 b + 2 b (-1 + 2 b))).
+```
+
+
+
 ## Example of Non-zero dimensional residue
 ```
 multiResidue((z2+1)/(z1^2-z3-1),[z1, z2,(z1 + z2)*(z1 + z2 + z3)],[z1,z2,z3])
