@@ -131,8 +131,34 @@ end
 
 function inhomoEqn(ideal::Vector{Basic},vars::Vector{Basic},order::Int64)
       mat=[diff(ideal[i],vars[j]) for i in 1:length(ideal), j in 1:length(vars)];
-      𝒟(det(mat),vars,order)
+      #print(mat);
+      𝒟(birddet(mat)|>expand,vars,order)
 end
+
+function birddet(A::AbstractMatrix) # this code is from @stevengj
+      n = LinearAlgebra.checksquare(A)
+      
+      function μ!(M, X)
+          for j = 2:n, i = 1:j-1
+              M[i,j] = X[i,j]
+          end
+          for j = 1:n-1, i = j+1:n
+              M[i,j] = zero(eltype(X))
+          end
+          M[n,n] = zero(eltype(X))
+          for k = n-1:-1:1
+              M[k,k] = M[k+1,k+1] - X[k+1,k+1]
+          end
+          return M
+      end
+      
+      M = similar(A)
+      X = copy(A)
+      for i = 1:n-1
+          mul!(X, μ!(M, X), A)
+      end
+      return isodd(n) ? X[1,1] : -X[1,1]
+  end
 
 function eqnAnsatz(ideal::Vector{Basic},vars::Vector{Basic},order::Int64)
       intersectionNumber=[degree(ideal[i],vars) for i=1:length(ideal)]|>prod;
@@ -142,18 +168,27 @@ function eqnAnsatz(ideal::Vector{Basic},vars::Vector{Basic},order::Int64)
       homo
 end
 
-function solveold(ideal::Vector{Basic},vars::Vector{Basic})
+function rankSym(f::Matrix{Basic})
+      g=f|>Iterators.flatten|>collect;
+      allSym=[free_symbols(g)...,function_symbols(g)...];
+      allSymNum=Dict([allSym[i]=>rand(Float64) for i=1:length(allSym)]...);
+      dims=size(f);
+      fnum=[subs(f[i,j],allSymNum)|>expand|>N for i=1:dims[1],j=1:dims[2]];
+     #print(fnum);
+      rank(fnum)
+end
+function solve(ideal::Vector{Basic},vars::Vector{Basic})
       eqns=ideal;
       aVar=vars;
-      aMat=[coeff(eqns[i],aVar[j])|>Int for i=1:length(eqns), j=1:length(aVar)];
-      aMatrank=rank(aMat);
+      aMat=[coeff(eqns[i],aVar[j]) for i=1:length(eqns), j=1:length(aVar)];
+      aMatrank=rankSym(aMat);
       aM=aMat;
       notlist=[];
       while length(aM[:,1])> aMatrank
-            aMrank=rank(aM);
+            aMrank=rankSym(aM);
             for i=1:length(aM[:,1])
                   Mt=aM[Not(i), :];
-                  if Mt|>rank == aMrank
+                  if Mt|>rankSym == aMrank
                         push!(notlist,i+length(notlist))
                         aM=Mt;
                         break
@@ -161,18 +196,27 @@ function solveold(ideal::Vector{Basic},vars::Vector{Basic})
             end
       end
       dimaM=size(aM)[1];
-      aMSym=[Basic(aM[i,j]) for i=1:dimaM, j=1:dimaM];
-      inhomTerm=eqns[Not(notlist)];
-      for i=1:length(aVar)
-            inhomTerm=[subs(inhomTerm[j],aVar[i],0)|>Basic for j=1:length(inhomTerm)]
+      if dimaM<length(aVar)
+            print("not enough equantions to solve")
+            return []
+      elseif dimaM>length(aVar)
+            print("over constraint equantions to solve")
+            return []
+      else
+            #aMSym=[Basic(aM[i,j]) for i=1:dimaM, j=1:dimaM];
+            inhomTerm=eqns[Not(notlist)];
+            for i=1:length(aVar)
+                  inhomTerm=[subs(inhomTerm[j],aVar[i],0)|>Basic for j=1:length(inhomTerm)]
+            end
+            inhomTerm=.-inhomTerm;
+            #print(aMSym);
+            invM=inv(aM);
+            sol=[aVar[i]=>dot(invM[i,:],inhomTerm) for i=1:dimaM];
+            sol=Dict(sol...)
       end
-      inhomTerm=.-inhomTerm;
-      invM=inv(aMSym);
-      sol=[aVar[i]=>dot(invM[i,:],inhomTerm) for i=1:dimaM];
-      sol=[Dict(sol...)]
 end
 
-function solve(ideal::Vector{Basic},vars::Vector{Basic})
+function solveslow(ideal::Vector{Basic},vars::Vector{Basic})
       eqns=ideal;
       aVar=vars;
       aMat=[coeff(eqns[i],aVar[j]) for i=1:length(eqns), j=1:length(aVar)];
@@ -187,9 +231,9 @@ function solve(ideal::Vector{Basic},vars::Vector{Basic})
       aM=[];
       #print("lengmId",length(mId),"end");
       for i=1:length(mId)
-            derm=det(aMat[mId[i],:])|>expand;
+            derm=rankSym(aMat[mId[i],:]);
             #print("fuuuut",derm,"nimamamamma");
-            if derm!=Basic(0) 
+            if derm==length(aVar)
                   inlist=mId[i];
                   aM=aMat[mId[i],:];
                   j=i;
@@ -224,7 +268,9 @@ function multiResidue(num::Basic,homoideal::Vector{Basic},vars::Vector{Basic})
       #print("befor solve");
       #print(coeqn);
       #print("befor solve");
+      #sola=solve(coeqn,aVar);
       sola=solve(coeqn,aVar);
+      #print(sola);
       if sola==[]
             print("no solution for the residue, check if the intersection is non-zero dimension")
             return false
