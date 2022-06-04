@@ -112,6 +112,7 @@ eqns=[x-y-1, 2(x + y)]
 vars=[x,y]
 solve(eqns,vars)
 ```
+This solve function is not quite efficient. If in future, there is efficient solve function in  [SymEngine](https://github.com/symengine/SymEngine.jl) . I will replace it. 
 
 # Citation 
 If you use **multiResidue.jl**, please cite the two papers [arxiv 1609.07621](https://arxiv.org/pdf/1609.07621.pdf) and [arxiv 1709.08503](https://arxiv.org/pdf/1709.08503.pdf) as following
