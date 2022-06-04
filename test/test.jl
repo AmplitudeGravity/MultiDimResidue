@@ -1,4 +1,3 @@
-push!(LOAD_PATH, "/Users/gangchen");
 using MultiResidue
 using Test
 using SymEngine
