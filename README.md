@@ -87,7 +87,7 @@ The output is
 - 384*(4 + 8*b/a^2)/((4 - 4*a^(-2))*(96*b/a^3 + (-3/2)*(128*b - 64*b/a^2)/a + (-1/2)*(-192*b/a^3 - 3*(64*b/a^2 + 64*a^2)/a)*(4 + 8*b/a^2)/(4 - 4*a^(-2))))
 - 576*(4 + 8*b/a^2)/(a*(4 - 4*a^(-2))*(96*b/a^3 + (-3/2)*(128*b - 64*b/a^2)/a + (-1/2)*(-192*b/a^3 - 3*(64*b/a^2 + 64*a^2)/a)*(4 + 8*b/a^2)/(4 - 4*a^(-2))))
 ```
-Nowadays, we still do not have any efficient simplifcation code in Julia CAS. Let's look forward to the future version of SymEngine.jl. However, by mathematica, the result can be simplified to 
+Nowadays, we still do not have simplifcation code in SymEngine.jl. I need use Symbolics in future. However, by mathematica, the result can be simplified to 
 ```
 -((a^3 + 2 a^4 + 2 a^5 + 4 b + 6 a b + a^2 (2 + 4 b))/(
  a^6 + 6 a^2 b + 2 b (-1 + 2 b))).
