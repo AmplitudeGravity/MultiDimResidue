@@ -157,4 +157,4 @@ Some plan in future on this package:
 2. extending to non-homogeneous ideals 
 3. extending to non-zero dimensional intersections
 4. adding Exterior algebra on the differential form and parameter transformation(local transformation will improve the performance greatly)
-5. adding the new integral reduction method by Multi variable residue.
+5. adding the new integral reduction method by Multi variable residue(maybe next project).
