@@ -70,7 +70,7 @@ h3=z1^2 - z2*z1 + z3^2;
 ideal=[h1,h2,h3];
 vars=[z1, z2, z3];
 MultiResidue.homoEqn([h1,h2,h3],[z1,z2,z3],5)
-"The last integral variable is the degree in the differential operator, 
+"The last integer variable is the degree in the differential operator, 
 it equals the difference of total degree of ideal and the number of the integral variables. 
 5=degree(h1)+degree(h2)+degree(h3)-length(vars)"
 
