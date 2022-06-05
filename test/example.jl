@@ -28,12 +28,13 @@ h4 = z2^2 - z2*z3 + z4^2;
 res3
 
 
-
 #ideal=[h1,h2,h3];
 #vars=[z1, z2, z3];
 #MultiResidue.rankSym([h1 h2 h3; h3 h4 h2; h1+h2 h3*h3 h4*h1])
 #MultiResidue.homoEqn([h1,h2,h3,h4],[z1,z2,z3,z4],3)
 #subs([h1 h2; h3 h4],Dict(z1=>2,z2=>33))
 #inEqn=MultiResidue.inhomoEqn([h1,h2,h3,h4],[z1,z2,z3,z4],3)
+
+
 
 

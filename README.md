@@ -22,7 +22,7 @@ h1=x;
 h2=y*(x + 2y);
 h3=x^2 + y*x + 3z*z;
 ```
-and then calculate the counter integration around the origin for the function f
+and then calculate the counter intersection around the origin for the function f
 ```
 f=(2x + 3y + 4z)/(z - 2)
 multiResidue(f,[h1,h2,h3],[x,y,z])
@@ -70,9 +70,6 @@ h3=z1^2 - z2*z1 + z3^2;
 ideal=[h1,h2,h3];
 vars=[z1, z2, z3];
 MultiResidue.homoEqn([h1,h2,h3],[z1,z2,z3],5)
-"The last integer variable is the degree in the differential operator, 
-it equals the difference of total degree of ideal and the number of the integral variables. 
-5=degree(h1)+degree(h2)+degree(h3)-length(vars)"
 
 MultiResidue.inhomoEqn([h1,h2,h3],[z1,z2,z3],5)
 
@@ -90,7 +87,7 @@ The output is
 - 384*(4 + 8*b/a^2)/((4 - 4*a^(-2))*(96*b/a^3 + (-3/2)*(128*b - 64*b/a^2)/a + (-1/2)*(-192*b/a^3 - 3*(64*b/a^2 + 64*a^2)/a)*(4 + 8*b/a^2)/(4 - 4*a^(-2))))
 - 576*(4 + 8*b/a^2)/(a*(4 - 4*a^(-2))*(96*b/a^3 + (-3/2)*(128*b - 64*b/a^2)/a + (-1/2)*(-192*b/a^3 - 3*(64*b/a^2 + 64*a^2)/a)*(4 + 8*b/a^2)/(4 - 4*a^(-2))))
 ```
-Nowadays, we still do not have simplifcation code in SymEngine.jl. I need use Symbolics in future. However, by mathematica, the result can be simplified to 
+Nowadays, we still do not have any efficient simplifcation code in Julia CAS. Let's look forward to the future version of SymEngine.jl. However, by mathematica, the result can be simplified to 
 ```
 -((a^3 + 2 a^4 + 2 a^5 + 4 b + 6 a b + a^2 (2 + 4 b))/(
  a^6 + 6 a^2 b + 2 b (-1 + 2 b))).
@@ -150,14 +147,3 @@ If you use **multiResidue.jl**, please cite the two papers [arxiv 1609.07621](ht
     year = "2020"
 }
 ```
-
-
-
-## Future plans 
-Some plan in future on this package: 
-
-1. using [Symbolics.jl](https://github.com/JuliaSymbolics/Symbolics.jl). Symbolics have solve function and simplify function now. 
-2. extending to non-homogeneous ideals 
-3. extending to non-zero dimensional intersections
-4. adding Exterior algebra on the differential form and parameter transformation(local transformation will improve the performance greatly)
-5. adding the new integral reduction method by Multi variable residue(maybe next project).

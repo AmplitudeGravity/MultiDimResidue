@@ -1,7 +1,7 @@
 name = "MultiResidue"
 uuid = "15ac1977-6a35-4422-b111-63c1dba6b911"
 authors = ["gangchen "]
-version = "1.5.0"
+version = "0.1.0"
 
 [deps]
 InvertedIndices = "41ab1584-1d38-5bbf-9106-f11c6c58b48f"

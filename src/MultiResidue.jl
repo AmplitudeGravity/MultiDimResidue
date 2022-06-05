@@ -2,7 +2,7 @@ module MultiResidue
 using SymEngine
 using LinearAlgebra
 using InvertedIndices
-using Combinatorics
+#using Combinatorics
 export multiResidue, gd, 𝒟,degree, FrobeniusSolve, solve
 export @varss
 macro varss(x,n::Int64)
@@ -216,46 +216,46 @@ function solve(ideal::Vector{Basic},vars::Vector{Basic})
       end
 end
 
-function solveslow(ideal::Vector{Basic},vars::Vector{Basic})
-      eqns=ideal;
-      aVar=vars;
-      aMat=[coeff(eqns[i],aVar[j]) for i=1:length(eqns), j=1:length(aVar)];
-      #print(eqns,aVar);
-      mId=powerset([i for i=1:length(eqns)], length(aVar), length(aVar))|>collect;
-      if mId==[] 
-            print("equantions are not enough to solve")
-            return []
-      end
-      j=0;
-      inlist=[];
-      aM=[];
-      #print("lengmId",length(mId),"end");
-      for i=1:length(mId)
-            derm=rankSym(aMat[mId[i],:]);
-            #print("fuuuut",derm,"nimamamamma");
-            if derm==length(aVar)
-                  inlist=mId[i];
-                  aM=aMat[mId[i],:];
-                  j=i;
-                  break;
-            end
-      end
-      if j==0
-            print("not enough equantions to solve")
-            return []
-      else
-            inhomTerm=eqns[inlist];
-            for i=1:length(aVar)
-                  inhomTerm=[subs(inhomTerm[j],aVar[i],0)|>Basic for j=1:length(inhomTerm)]
-            end
-            inhomTerm=.-inhomTerm;
-            #print(aM);
-            invM=inv(aM);
-            dimaM=size(aM)[1];
-            sol=[aVar[i]=>dot(invM[i,:],inhomTerm) for i=1:dimaM];
-            sol=Dict(sol...)
-      end     
-end
+#function solveslow(ideal::Vector{Basic},vars::Vector{Basic})
+#      eqns=ideal;
+ #     aVar=vars;
+ #     aMat=[coeff(eqns[i],aVar[j]) for i=1:length(eqns), j=1:length(aVar)];
+#      #print(eqns,aVar);
+#      mId=powerset([i for i=1:length(eqns)], length(aVar), length(aVar))|>collect;
+#      if mId==[] 
+#            print("equantions are not enough to solve")
+#            return []
+ #     end
+#      j=0;
+ #     inlist=[];
+ #     aM=[];
+ #     #print("lengmId",length(mId),"end");
+ #     for i=1:length(mId)
+ #           derm=rankSym(aMat[mId[i],:]);
+ #           #print("fuuuut",derm,"nimamamamma");
+ #           if derm==length(aVar)
+ #                 inlist=mId[i];
+ #                 aM=aMat[mId[i],:];
+ #                 j=i;
+ #                 break;
+ #           end
+ #     end
+ #     if j==0
+ #           print("not enough equantions to solve")
+ #           return []
+ #     else
+ #           inhomTerm=eqns[inlist];
+ #           for i=1:length(aVar)
+ #                 inhomTerm=[subs(inhomTerm[j],aVar[i],0)|>Basic for j=1:length(inhomTerm)]
+ #           end
+ #           inhomTerm=.-inhomTerm;
+ #           #print(aM);
+ #           invM=inv(aM);
+ #           dimaM=size(aM)[1];
+ #           sol=[aVar[i]=>dot(invM[i,:],inhomTerm) for i=1:dimaM];
+ #           sol=Dict(sol...)
+ #     end     
+#end
 
 function multiResidue(num::Basic,homoideal::Vector{Basic},vars::Vector{Basic})
       dOrder=[degree(homoideal[i],vars) for i=1:length(homoideal)]|>sum;
