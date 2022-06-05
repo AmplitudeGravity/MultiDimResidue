@@ -153,7 +153,7 @@ If you use **multiResidue.jl**, please cite the two papers [arxiv 1609.07621](ht
 ## Future plans 
 Some plan in future on this package: 
 
-1. using Symbolics. Symbolics have solve function and simplify function now. 
+1. using [Symbolics.jl](https://github.com/JuliaSymbolics/Symbolics.jl). Symbolics have solve function and simplify function now. 
 2. extending to non-homogeneous ideals 
 3. extending to non-zero dimensional intersections
 4. adding Exterior algebra on the differential form and parameter transformation(local transformation will improve the performance greatly)
