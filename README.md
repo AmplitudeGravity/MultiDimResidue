@@ -22,7 +22,7 @@ h1=x;
 h2=y*(x + 2y);
 h3=x^2 + y*x + 3z*z;
 ```
-and then calculate the counter intersection around the origin for the function f
+and then calculate the counter integration around the origin for the function f
 ```
 f=(2x + 3y + 4z)/(z - 2)
 multiResidue(f,[h1,h2,h3],[x,y,z])
