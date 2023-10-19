@@ -13,6 +13,14 @@ macro varss(x,n::Int64)
       push!(q.args, Expr(:tuple, map(esc, "$x".*map(string,1:n).|>Symbol)...))
       q
   end
+  macro varss(x, j...)
+      vars=Expr(:block)
+      for i in Iterators.product((1:k for k in j)...)
+          push!(vars.args, Expr(:(=), esc(Symbol("$x$(i...)")), Expr(:quote,Symbol("$x$(i...)"))))
+      end
+      push!(vars.args,  Expr(:tuple,map(esc, "$x".*map(string,["$(i...)" for i in Iterators.product((1:k for k in j)...) ]).|>Symbol)...))
+      vars
+  end
 function degree(f::Basic)
       if SymEngine.get_symengine_class(f)==:Add
              ls=get_args(f); 
