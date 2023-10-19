@@ -16,7 +16,7 @@ macro varss(x,n::Int64)
   macro varss(x, j...)
       vars=Expr(:block)
       for i in Iterators.product((1:k for k in j)...)
-          push!(vars.args, Expr(:(=), esc(Symbol("$x$(i...)")), Expr(:quote,Symbol("$x$(i...)"))))
+          push!(vars.args, Expr(:(=), esc(Symbol("$x$(i...)")), Expr(:call, :(SymEngine._symbol), Expr(:quote,Symbol("$x$(i...)")))))
       end
       push!(vars.args,  Expr(:tuple,map(esc, "$x".*map(string,["$(i...)" for i in Iterators.product((1:k for k in j)...) ]).|>Symbol)...))
       vars
